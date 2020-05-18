@@ -46,7 +46,7 @@ kafka-server-start.bat ..\..\config\server.properties
 localhost:9092,localhost:9093,localhost:9094
 
 ###### h2-database console is available on below url,
-http://localhost:9091//h2-console
+http://localhost:9091/h2-console
 
 ## How to access exposed API endpoints,
 
