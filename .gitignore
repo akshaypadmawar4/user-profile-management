@@ -1,0 +1,12 @@
+.metadata
+.idea
+.settings
+latex
+target
+.classpath
+.DS_Store
+.factorypath
+.project
+assignment.iml
+
+
