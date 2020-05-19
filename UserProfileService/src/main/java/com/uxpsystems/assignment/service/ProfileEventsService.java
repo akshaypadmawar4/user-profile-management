@@ -36,10 +36,6 @@ public class ProfileEventsService {
         ProfileEvent profileEvent = objectMapper.readValue(consumerRecord.value(), ProfileEvent.class);
         logger.info("profileEvent : {} ", profileEvent);
 
-        /*if(profileEvent.getProfileId()!=null && profileEvent.getProfileId()==000){
-            throw new RecoverableDataAccessException("Temporary Network Issue");
-        }*/
-
         switch(profileEvent.getProfileEventType()){
             case UPDATE:
                 //validate the profileevent
