@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.when;
 
-import java.awt.print.Book;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -26,74 +25,74 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uxpsystems.assignment.model.Profile;
 import com.uxpsystems.assignment.model.ProfileEvent;
 import com.uxpsystems.assignment.model.ProfileEventType;
-import com.uxpsystems.assignment.producer.ProfileEventProducer;
 
 @ExtendWith(MockitoExtension.class)
 public class ProfileEventProducerUnitTest {
 
-    @Mock
-    KafkaTemplate<Integer,String> kafkaTemplate;
+	@Mock
+	KafkaTemplate<Integer, String> kafkaTemplate;
 
-    @Spy
-    ObjectMapper objectMapper = new ObjectMapper();
+	@Spy
+	ObjectMapper objectMapper = new ObjectMapper();
 
-    @InjectMocks
-    ProfileEventProducer eventProducer;
+	@InjectMocks
+	ProfileEventProducer eventProducer;
 
-    @Test
-    void sendProfileEventFailureTest() throws JsonProcessingException, ExecutionException, InterruptedException {
-        //given
-        
-        Profile profile = new Profile();
-        profile.setId(1);
-        profile.setAddress("Hinjewadi");
-        profile.setPhoneNumber(9028380486L);
-        
-        ProfileEvent profileEvent = new ProfileEvent();
-        profileEvent.setProfileId(null);
-        profileEvent.setProfileEventType(ProfileEventType.UPDATE);
-        profileEvent.setProfile(profile);
-        
-        SettableListenableFuture future = new SettableListenableFuture();
+	@Test
+	void sendProfileEventFailureTest() throws JsonProcessingException, ExecutionException, InterruptedException {
+		// given
 
-        future.setException(new RuntimeException("Exception Calling Kafka"));
-        when(kafkaTemplate.send(isA(ProducerRecord.class))).thenReturn(future);
-        //when
+		Profile profile = new Profile();
+		profile.setId(1);
+		profile.setAddress("Hinjewadi");
+		profile.setPhoneNumber(9028380486L);
 
-        assertThrows(Exception.class, ()->eventProducer.sendProfileEvent(profileEvent).get());
+		ProfileEvent profileEvent = new ProfileEvent();
+		profileEvent.setProfileId(null);
+		profileEvent.setProfileEventType(ProfileEventType.UPDATE);
+		profileEvent.setProfile(profile);
 
-    }
+		SettableListenableFuture future = new SettableListenableFuture();
 
-    @Test
-    void sendProfileEvenSuccessTest() throws JsonProcessingException, ExecutionException, InterruptedException {
-        //given
-    	 Profile profile = new Profile();
-         profile.setId(1);
-         profile.setAddress("Hinjewadi");
-         profile.setPhoneNumber(9028380486L);
-         
-         ProfileEvent profileEvent = new ProfileEvent();
-         profileEvent.setProfileId(1);
-         profileEvent.setProfileEventType(ProfileEventType.UPDATE);
-         profileEvent.setProfile(profile);
-         
-        String record = objectMapper.writeValueAsString(profileEvent);
-        SettableListenableFuture future = new SettableListenableFuture();
+		future.setException(new RuntimeException("Exception Calling Kafka"));
+		when(kafkaTemplate.send(isA(ProducerRecord.class))).thenReturn(future);
+		// when
 
-        ProducerRecord<Integer, String> producerRecord = new ProducerRecord("profile-events", profileEvent.getProfileId(),record );
-        RecordMetadata recordMetadata = new RecordMetadata(new TopicPartition("profile-events", 1),
-                1,1,342,System.currentTimeMillis(), 1, 2);
-        SendResult<Integer, String> sendResult = new SendResult<Integer, String>(producerRecord,recordMetadata);
+		assertThrows(Exception.class, () -> eventProducer.sendProfileEvent(profileEvent).get());
 
-        future.set(sendResult);
-        when(kafkaTemplate.send(isA(ProducerRecord.class))).thenReturn(future);
-        //when
+	}
 
-        ListenableFuture<SendResult<Integer,String>> listenableFuture =  eventProducer.sendProfileEvent(profileEvent);
+	@Test
+	void sendProfileEvenSuccessTest() throws JsonProcessingException, ExecutionException, InterruptedException {
+		// given
+		Profile profile = new Profile();
+		profile.setId(1);
+		profile.setAddress("Hinjewadi");
+		profile.setPhoneNumber(9028380486L);
 
-        //then
-        SendResult<Integer,String> sendResult1 = listenableFuture.get();
-        assert sendResult1.getRecordMetadata().partition()==1;
+		ProfileEvent profileEvent = new ProfileEvent();
+		profileEvent.setProfileId(1);
+		profileEvent.setProfileEventType(ProfileEventType.UPDATE);
+		profileEvent.setProfile(profile);
 
-    }
+		String record = objectMapper.writeValueAsString(profileEvent);
+		SettableListenableFuture future = new SettableListenableFuture();
+
+		ProducerRecord<Integer, String> producerRecord = new ProducerRecord("profile-events",
+				profileEvent.getProfileId(), record);
+		RecordMetadata recordMetadata = new RecordMetadata(new TopicPartition("profile-events", 1), 1, 1, 342,
+				System.currentTimeMillis(), 1, 2);
+		SendResult<Integer, String> sendResult = new SendResult<Integer, String>(producerRecord, recordMetadata);
+
+		future.set(sendResult);
+		when(kafkaTemplate.send(isA(ProducerRecord.class))).thenReturn(future);
+		// when
+
+		ListenableFuture<SendResult<Integer, String>> listenableFuture = eventProducer.sendProfileEvent(profileEvent);
+
+		// then
+		SendResult<Integer, String> sendResult1 = listenableFuture.get();
+		assert sendResult1.getRecordMetadata().partition() == 1;
+
+	}
 }

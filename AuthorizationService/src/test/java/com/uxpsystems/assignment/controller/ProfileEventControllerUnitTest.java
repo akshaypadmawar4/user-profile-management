@@ -34,106 +34,104 @@ public class ProfileEventControllerUnitTest {
 	@InjectMocks
 	ProfileController profileController;
 
-    @Spy
-    ObjectMapper objectMapper = new ObjectMapper();
+	@Spy
+	ObjectMapper objectMapper = new ObjectMapper();
 
-    @Mock
-    ProfileEventProducer profileEventProducer;
-    
-    @Mock
+	@Mock
+	ProfileEventProducer profileEventProducer;
+
+	@Mock
 	private JwtTokenUtil jwtTokenUtil;
 
-    @Mock
+	@Mock
 	private JwtUserDetailsService userDetailsService;
-    
-    @Mock
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    
-    @Mock
+
+	@Mock
+	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+	@Mock
 	UserProfileServiceProxy proxy;
-    
 
-    @Test
-    void updateProfileEventTest() throws Exception {
-        //given
-    	Profile profile = new Profile();
-        profile.setId(1);
-        profile.setAddress("Hinjewadi");
-        profile.setPhoneNumber(9028380486L);
-        
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        
-        when(profileEventProducer.sendProfileEvent(isA(ProfileEvent.class))).thenReturn(null);
-        
-        ResponseEntity<?> responseEntity = profileController.updateProfile(profile);
-       
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+	@Test
+	void updateProfileEventTest() throws Exception {
+		// given
+		Profile profile = new Profile();
+		profile.setId(1);
+		profile.setAddress("Hinjewadi");
+		profile.setPhoneNumber(9028380486L);
 
-    }
-    
-    @Test
-    void updateProfileEventWithNullIdTest() throws Exception {
-        //given
-    	Profile profile = new Profile();
-        profile.setId(null);
-        profile.setAddress("Hinjewadi");
-        profile.setPhoneNumber(9028380486L);
-        
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        
-        ResponseEntity<?> responseEntity = profileController.updateProfile(profile);
-       
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-    }
-    
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
-    @Test
-    void deleteProfileEventTest() throws Exception {
-        //given
-        Integer profileId=123;
-        
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        
-        when(profileEventProducer.sendProfileEvent(isA(ProfileEvent.class))).thenReturn(null);
-        
-        ResponseEntity<?> responseEntity = profileController.deleteProfile(profileId);
-       
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody()).isEqualTo("Profile is deleted");
+		when(profileEventProducer.sendProfileEvent(isA(ProfileEvent.class))).thenReturn(null);
 
-    }
-    
-    @Test
-    void deleteProfileEventWithNullIdTest() throws Exception {
-        //given
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        
-        ResponseEntity<?> responseEntity = profileController.deleteProfile(null);
-       
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        assertThat(responseEntity.getBody()).isEqualTo("Please pass the ProfileId");
-    }
-    
-    @Test
-    void createProfileTest() throws Exception {
-        //given
-    	Profile profile = new Profile();
-        profile.setAddress("Hinjewadi");
-        profile.setPhoneNumber(9028380486L);
-       
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        
-        when(proxy.saveUserProfile(profile)).thenReturn(profile);
-        
-        ResponseEntity<?> responseEntity = profileController.createProfile(profile);
-       
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        
-    }
-    
+		ResponseEntity<?> responseEntity = profileController.updateProfile(profile);
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+	}
+
+	@Test
+	void updateProfileEventWithNullIdTest() throws Exception {
+		// given
+		Profile profile = new Profile();
+		profile.setId(null);
+		profile.setAddress("Hinjewadi");
+		profile.setPhoneNumber(9028380486L);
+
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+		ResponseEntity<?> responseEntity = profileController.updateProfile(profile);
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+	}
+
+	@Test
+	void deleteProfileEventTest() throws Exception {
+		// given
+		Integer profileId = 123;
+
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+		when(profileEventProducer.sendProfileEvent(isA(ProfileEvent.class))).thenReturn(null);
+
+		ResponseEntity<?> responseEntity = profileController.deleteProfile(profileId);
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(responseEntity.getBody()).isEqualTo("Profile is deleted");
+
+	}
+
+	@Test
+	void deleteProfileEventWithNullIdTest() throws Exception {
+		// given
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+		ResponseEntity<?> responseEntity = profileController.deleteProfile(null);
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+		assertThat(responseEntity.getBody()).isEqualTo("Please pass the ProfileId");
+	}
+
+	@Test
+	void createProfileTest() throws Exception {
+		// given
+		Profile profile = new Profile();
+		profile.setAddress("Hinjewadi");
+		profile.setPhoneNumber(9028380486L);
+
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+		when(proxy.saveUserProfile(profile)).thenReturn(profile);
+
+		ResponseEntity<?> responseEntity = profileController.createProfile(profile);
+
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+	}
+
 }

@@ -16,38 +16,35 @@ import com.uxpsystems.assignment.repository.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class JwtUserDetailsServiceTest {
-	
+
 	@InjectMocks
 	JwtUserDetailsService jwtUserDetailsService;
-	
+
 	@Mock
 	UserRepository userRepository;
-	
-	
+
 	@Test
-    public void loadUserByUsernameTest()
-    {
-		String username="user";
-		DAOUser daoUser = new  DAOUser();
+	public void loadUserByUsernameTest() {
+		String username = "user";
+		DAOUser daoUser = new DAOUser();
 		daoUser.setUsername("user");
 		daoUser.setPassword("pass");
-        
-        when(userRepository.findByUsername(username)).thenReturn(daoUser);
-        String pass = jwtUserDetailsService.loadUserByUsername(username).getPassword();
-        assertEquals("pass",pass);
-    }
-	
+
+		when(userRepository.findByUsername(username)).thenReturn(daoUser);
+		String pass = jwtUserDetailsService.loadUserByUsername(username).getPassword();
+		assertEquals("pass", pass);
+	}
+
 	@Test
-    public void loadUserByUsernameExceptionTest()
-    {
-		String username="user";
-		DAOUser daoUser = new  DAOUser();
+	public void loadUserByUsernameExceptionTest() {
+		String username = "user";
+		DAOUser daoUser = new DAOUser();
 		daoUser.setUsername("user");
 		daoUser.setPassword("pass");
-		
-        when(userRepository.findByUsername(username)).thenReturn(null);
-        
-        assertThrows(UsernameNotFoundException.class, ()->jwtUserDetailsService.loadUserByUsername(username));
-    }
-	
+
+		when(userRepository.findByUsername(username)).thenReturn(null);
+
+		assertThrows(UsernameNotFoundException.class, () -> jwtUserDetailsService.loadUserByUsername(username));
+	}
+
 }
