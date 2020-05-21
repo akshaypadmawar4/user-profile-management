@@ -29,7 +29,6 @@ public class ProfileEventControllerUnitTest {
 
     @MockBean
     UserProfileService userProfileService;
-  
 
     @Test
     void profileCreationTest() throws Exception {
@@ -49,5 +48,6 @@ public class ProfileEventControllerUnitTest {
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
+        
      }
 }

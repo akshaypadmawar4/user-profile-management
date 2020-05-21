@@ -24,7 +24,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uxpsystems.assignment.config.JwtAuthenticationEntryPoint;
 import com.uxpsystems.assignment.config.JwtTokenUtil;
 import com.uxpsystems.assignment.model.JwtRequest;
