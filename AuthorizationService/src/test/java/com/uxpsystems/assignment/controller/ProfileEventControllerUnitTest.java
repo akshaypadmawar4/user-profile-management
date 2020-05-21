@@ -10,7 +10,6 @@ import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +17,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uxpsystems.assignment.config.JwtAuthenticationEntryPoint;
 import com.uxpsystems.assignment.config.JwtTokenUtil;
 import com.uxpsystems.assignment.model.Profile;
@@ -33,9 +31,6 @@ public class ProfileEventControllerUnitTest {
 
 	@InjectMocks
 	ProfileController profileController;
-
-	@Spy
-	ObjectMapper objectMapper = new ObjectMapper();
 
 	@Mock
 	ProfileEventProducer profileEventProducer;
