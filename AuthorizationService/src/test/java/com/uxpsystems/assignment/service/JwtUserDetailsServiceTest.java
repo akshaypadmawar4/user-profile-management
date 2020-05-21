@@ -38,9 +38,6 @@ public class JwtUserDetailsServiceTest {
 	@Test
 	public void loadUserByUsernameExceptionTest() {
 		String username = "user";
-		DAOUser daoUser = new DAOUser();
-		daoUser.setUsername("user");
-		daoUser.setPassword("pass");
 
 		when(userRepository.findByUsername(username)).thenReturn(null);
 
