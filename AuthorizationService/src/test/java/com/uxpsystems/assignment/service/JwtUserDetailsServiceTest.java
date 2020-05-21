@@ -38,7 +38,7 @@ public class JwtUserDetailsServiceTest {
     }
 	
 	@Test
-    public void saveProfileTestException()
+    public void loadUserByUsernameExceptionTest()
     {
 		String username="user";
 		DAOUser daoUser = new  DAOUser();
