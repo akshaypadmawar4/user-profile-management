@@ -19,7 +19,6 @@ import com.uxpsystems.assignment.service.UserProfileService;
 
 
 @WebMvcTest(UserProfileController.class)
-@AutoConfigureMockMvc
 public class ProfileEventControllerUnitTest {
 
     @Autowired

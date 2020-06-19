@@ -4,22 +4,22 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.uxpsystems.assignment.dao.ProfileRepository;
 import com.uxpsystems.assignment.entity.UserProfile;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class UserProfileServiceTest {
 	
-	@Autowired
+	@InjectMocks
 	UserProfileService userProfileService;
 	
-	@MockBean
+	@Mock
 	ProfileRepository profileRepository;
-	
 	
 	@Test
     public void saveProfileTest()
@@ -35,7 +35,5 @@ public class UserProfileServiceTest {
         assertEquals("Ravet", savedProfile.getAddress());
       
     }
-    
-	
 	
 }
