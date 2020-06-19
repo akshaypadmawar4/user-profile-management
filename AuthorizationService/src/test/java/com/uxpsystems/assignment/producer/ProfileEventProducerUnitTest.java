@@ -1,5 +1,6 @@
 package com.uxpsystems.assignment.producer;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.when;
@@ -76,9 +77,9 @@ public class ProfileEventProducerUnitTest {
 		profileEvent.setProfile(profile);
 
 		String record = objectMapper.writeValueAsString(profileEvent);
-		SettableListenableFuture future = new SettableListenableFuture();
+		SettableListenableFuture<SendResult<Integer, String>> future = new SettableListenableFuture<SendResult<Integer, String>>();
 
-		ProducerRecord<Integer, String> producerRecord = new ProducerRecord("profile-events",
+		ProducerRecord<Integer, String> producerRecord = new ProducerRecord<Integer, String>("profile-events",
 				profileEvent.getProfileId(), record);
 		RecordMetadata recordMetadata = new RecordMetadata(new TopicPartition("profile-events", 1), 1, 1, 342,
 				System.currentTimeMillis(), 1, 2);
@@ -92,7 +93,7 @@ public class ProfileEventProducerUnitTest {
 
 		// then
 		SendResult<Integer, String> sendResult1 = listenableFuture.get();
-		assert sendResult1.getRecordMetadata().partition() == 1;
+		assertEquals(sendResult1.getRecordMetadata().partition() , 1);
 
 	}
 }
